@@ -24,4 +24,10 @@
     <dimen name="udfps_animation_size">260dp</dimen>
     <dimen name="udfps_animation_offset">-12dp</dimen>
     <dimen name="keyguard_indication_margin_bottom">8dp</dimen>
+
+    <!-- The CPU temperature sensor path, defaults to empty -->
+    <string name="config_cpuTempSensor" translatable="false">/sys/class/thermal/thermal_zone13/temp</string>
+
+    <!-- The CPU temperature divider, if needed -->
+    <integer name="config_cpuTempDivider" translatable="false">1000</integer>
 </resources>
