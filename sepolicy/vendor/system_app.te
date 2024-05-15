@@ -5,3 +5,5 @@ allow system_app proc_vmallocinfo:file r_file_perms;
 # Zram
 allow system_app sysfs_zram:dir search;
 allow system_app sysfs_zram:file r_file_perms;
+
+get_prop(system_app, qemu_hw_prop)
