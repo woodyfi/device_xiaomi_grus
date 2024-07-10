@@ -1,5 +1,5 @@
-<manifest version="2.0" type="device" target-level="4">
-    <kernel target-level="4" />
+<manifest version="2.0" type="device" target-level="5">
+    <kernel target-level="5" />
     <hal format="hidl">
         <name>android.hardware.audio</name>
         <transport>hwbinder</transport>
@@ -115,11 +115,6 @@
         <name>android.hardware.tetheroffload.control</name>
         <transport>hwbinder</transport>
         <fqname>@1.0::IOffloadControl/default</fqname>
-    </hal>
-    <hal format="hidl">
-        <name>com.qualcomm.qti.bluetooth_audio</name>
-        <transport>hwbinder</transport>
-        <fqname>@1.0::IBluetoothAudio/default</fqname>
     </hal>
     <hal format="hidl">
         <name>com.qualcomm.qti.imscmservice</name>

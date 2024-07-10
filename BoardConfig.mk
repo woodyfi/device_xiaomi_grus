@@ -1,5 +1,5 @@
 #
-# Copyright (C) 2022 The LineageOS Project
+# Copyright (C) 2024 The LineageOS Project
 #
 # SPDX-License-Identifier: Apache-2.0
 #
@@ -43,6 +43,9 @@ USE_CUSTOM_AUDIO_POLICY := 1
 TARGET_BOOTLOADER_BOARD_NAME := sdm710
 TARGET_NO_BOOTLOADER := true
 
+# Camera
+TARGET_USES_YCRCB_CAMERA_ENCODE := true
+
 # Display
 TARGET_HAS_WIDE_COLOR_DISPLAY := true
 TARGET_SCREEN_DENSITY := 440
@@ -63,7 +66,6 @@ BOARD_KERNEL_BASE := 0x00000000
 BOARD_KERNEL_PAGESIZE := 4096
 BOARD_KERNEL_CMDLINE := console=ttyMSM0,115200n8 earlycon=msm_geni_serial,0xA90000 androidboot.hardware=qcom androidboot.console=ttyMSM0 msm_rtb.filter=0x237 ehci-hcd.park=3 lpm_levels.sleep_disabled=1 service_locator.enable=1 androidboot.configfs=true androidboot.usbcontroller=a600000.dwc3 swiotlb=1 loop.max_part=7
 BOARD_KERNEL_CMDLINE += androidboot.init_fatal_reboot_target=recovery
-BOARD_KERNEL_CMDLINE += usbcore.autosuspend=7
 BOARD_KERNEL_IMAGE_NAME := Image
 BOARD_INCLUDE_DTB_IN_BOOTIMG := true
 BOARD_KERNEL_SEPARATED_DTBO := true
@@ -142,7 +144,13 @@ BOARD_AVB_RECOVERY_ROLLBACK_INDEX_LOCATION := 1
 
 # VINTF
 DEVICE_MANIFEST_FILE += $(DEVICE_PATH)/manifest.xml
-DEVICE_MATRIX_FILE += $(DEVICE_PATH)/compatibility_matrix.xml
+DEVICE_MATRIX_FILE += hardware/qcom-caf/common/compatibility_matrix.xml
+DEVICE_FRAMEWORK_COMPATIBILITY_MATRIX_FILE := \
+    $(DEVICE_PATH)/framework_compatibility_matrix.xml \
+    hardware/qcom-caf/common/vendor_framework_compatibility_matrix.xml \
+    hardware/qcom-caf/common/vendor_framework_compatibility_matrix_legacy.xml \
+    hardware/xiaomi/vintf/xiaomi_framework_compatibility_matrix.xml \
+    vendor/lineage/config/device_framework_matrix.xml
 
 # VNDK
 BOARD_VNDK_VERSION := current

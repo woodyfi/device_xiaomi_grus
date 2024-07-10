@@ -69,9 +69,6 @@ on fs
     chmod 0644 /proc/tp_selftest
 
 on late-fs
-    # Wait for keymaster
-    exec_start wait_for_keymaster
-
     # Mount RW partitions which need run fsck
     mount_all /vendor/etc/fstab.qcom --late
 
@@ -161,7 +158,6 @@ on boot
     setprop vendor.usb.rmnet.inst.name "rmnet"
     setprop vendor.usb.dpl.inst.name "dpl"
     setprop vendor.usb.qdss.inst.name "qdss"
-    setprop sys.usb.configfs 1
 
 # restore correct usb config during early boot
 on boot && property:persist.sys.usb.config=*
@@ -202,7 +198,6 @@ on boot
 
 on charger
     start vendor.power_off_alarm
-    setprop sys.usb.configfs 1
 
 service thermal-engine /system/vendor/bin/thermal-engine  -T
    class main

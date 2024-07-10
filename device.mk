@@ -7,6 +7,9 @@
 # Setup dalvik vm configs
 $(call inherit-product, frameworks/native/build/phone-xhdpi-6144-dalvik-heap.mk)
 
+# Add common definitions for Qualcomm
+$(call inherit-product, hardware/qcom-caf/common/common.mk)
+
 # Permissions
 PRODUCT_COPY_FILES += \
     frameworks/native/data/etc/android.hardware.audio.low_latency.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/android.hardware.audio.low_latency.xml \
@@ -118,6 +121,10 @@ PRODUCT_PACKAGES += \
     vendor.qti.hardware.camera.device@1.0.vendor \
     vendor.qti.hardware.camera.postproc@1.0.vendor
 
+# Configstore
+PRODUCT_PACKAGES += \
+    disable_configstore
+
 # Consumer IR
 PRODUCT_PACKAGES += \
     android.hardware.ir@1.0-service.xiaomi
@@ -131,10 +138,6 @@ PRODUCT_PACKAGES += \
     android.hardware.graphics.mapper@2.0-impl-qti-display \
     vendor.qti.hardware.display.allocator@1.0-service \
     gralloc.sdm710
-
-# Display ConfigStore
-PRODUCT_PACKAGES += \
-    disable_configstore
 
 PRODUCT_PACKAGES += \
     android.hardware.graphics.composer@2.3-service \
@@ -153,6 +156,7 @@ PRODUCT_PACKAGES += \
     libtinyxml \
     vendor.display.config@1.0.vendor \
     vendor.display.config@2.0 \
+    vendor.qti.hardware.display.config-V5-ndk \
     vendor.qti.hardware.display.mapper@2.0.vendor \
     vendor.qti.hardware.display.mapper@3.0.vendor
 
@@ -185,7 +189,8 @@ PRODUCT_PACKAGES += \
 # GNSS
 PRODUCT_PACKAGES += \
     android.hardware.gnss@1.1.vendor \
-    android.hardware.gnss@2.1.vendor
+    android.hardware.gnss@2.1.vendor \
+    libsqlite.vendor
 
 # Health
 PRODUCT_PACKAGES += \
@@ -197,7 +202,6 @@ PRODUCT_PACKAGES += \
 
 # HIDL
 PRODUCT_PACKAGES += \
-    android.hidl.allocator@1.0.vendor \
     android.hidl.base@1.0 \
     android.hidl.base@1.0.vendor \
     libhidltransport.vendor \
@@ -214,6 +218,10 @@ PRODUCT_PACKAGES += \
 # Input
 PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/keylayout/sdm670-mtp-snd-card_Button_Jack.kl:$(TARGET_COPY_OUT_VENDOR)/usr/keylayout/sdm670-mtp-snd-card_Button_Jack.kl
+
+# ION
+PRODUCT_PACKAGES += \
+    libion.vendor
 
 # IPACM
 PRODUCT_PACKAGES += \
@@ -244,13 +252,12 @@ PRODUCT_PACKAGES += \
 
 # Media configs
 PRODUCT_COPY_FILES += \
-    frameworks/av/media/libstagefright/data/media_codecs_google_audio.xml:$(TARGET_COPY_OUT_VENDOR)/etc/media_codecs_google_audio.xml \
     frameworks/av/media/libstagefright/data/media_codecs_google_c2.xml:$(TARGET_COPY_OUT_VENDOR)/etc/media_codecs_google_c2.xml \
     frameworks/av/media/libstagefright/data/media_codecs_google_c2_audio.xml:$(TARGET_COPY_OUT_VENDOR)/etc/media_codecs_google_c2_audio.xml \
-    frameworks/av/media/libstagefright/data/media_codecs_google_c2_video.xml:$(TARGET_COPY_OUT_VENDOR)/etc/media_codecs_google_c2_video.xml \
-    frameworks/av/media/libstagefright/data/media_codecs_google_telephony.xml:$(TARGET_COPY_OUT_VENDOR)/etc/media_codecs_google_telephony.xml \
-    frameworks/av/media/libstagefright/data/media_codecs_google_video.xml:$(TARGET_COPY_OUT_VENDOR)/etc/media_codecs_google_video.xml \
-    frameworks/av/media/libstagefright/data/media_codecs_google_video_le.xml:$(TARGET_COPY_OUT_VENDOR)/etc/media_codecs_google_video_le.xml
+    frameworks/av/media/libstagefright/data/media_codecs_google_c2_video.xml:$(TARGET_COPY_OUT_VENDOR)/etc/media_codecs_google_c2_video.xml
+
+PRODUCT_COPY_FILES += \
+    $(call find-copy-subdir-files,*,$(LOCAL_PATH)/media/,$(TARGET_COPY_OUT_VENDOR)/etc)
 
 # Mlipay
 PRODUCT_PACKAGES += \
@@ -310,6 +317,8 @@ DEVICE_PACKAGE_OVERLAYS += \
     $(LOCAL_PATH)/overlay-lineage
 
 PRODUCT_ENFORCE_RRO_TARGETS := *
+PRODUCT_ENFORCE_RRO_EXCLUDED_OVERLAYS += $(LOCAL_PATH)/overlay/packages/apps/CarrierConfig
+
 
 # Power
 PRODUCT_PACKAGES += \
@@ -351,11 +360,14 @@ PRODUCT_COPY_FILES += \
 
 # RIL
 PRODUCT_PACKAGES += \
-    android.hardware.radio@1.5.vendor \
-    android.hardware.radio.config@1.2.vendor \
-    android.hardware.radio.deprecated@1.0.vendor \
+    libprotobuf-cpp-full \
     librmnetctl \
     libxml2
+
+PRODUCT_PACKAGES += \
+    android.hardware.radio@1.6.vendor \
+    android.hardware.radio.config@1.3.vendor \
+    android.hardware.radio.deprecated@1.0.vendor
 
 # Rootdir
 PRODUCT_PACKAGES += \
@@ -400,7 +412,6 @@ PRODUCT_SOONG_NAMESPACES += \
 
 # Telephony
 PRODUCT_PACKAGES += \
-    CarrierConfigOverlay \
     ims-ext-common \
     ims_ext_common.xml \
     libgui_shim \
@@ -419,11 +430,13 @@ PRODUCT_PACKAGES += \
 
 # USB
 PRODUCT_PACKAGES += \
-    android.hardware.usb@1.3-service.dual_role_usb
+    android.hardware.usb@1.3-service.dual_role_usb \
+    android.hardware.usb.gadget@1.2-service-qti
 
 PRODUCT_PACKAGES += \
     init.qcom.usb.rc \
-    init.qcom.usb.sh
+    init.qcom.usb.sh \
+    usb_compositions.conf
 
 # Vibrator
 PRODUCT_PACKAGES += \
@@ -446,21 +459,19 @@ PRODUCT_PACKAGES += \
     wpa_supplicant.conf
 
 PRODUCT_PACKAGES += \
-    TargetWifiOverlay
+    firmware_WCNSS_qcom_cfg.ini_symlink \
+    firmware_wlan_mac.bin_symlink
 
 PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/wifi/WCNSS_qcom_cfg.ini:$(TARGET_COPY_OUT_VENDOR)/etc/wifi/WCNSS_qcom_cfg.ini \
     $(LOCAL_PATH)/wifi/p2p_supplicant_overlay.conf:$(TARGET_COPY_OUT_VENDOR)/etc/wifi/p2p_supplicant_overlay.conf \
     $(LOCAL_PATH)/wifi/wpa_supplicant_overlay.conf:$(TARGET_COPY_OUT_VENDOR)/etc/wifi/wpa_supplicant_overlay.conf
 
-# Wi-Fi Display#
-# Copyright (C) 2022 The LineageOS Project
-# Copyright (C) 2022-2023 The LineageOS Project
-#
-# SPDX-License-Identifier: Apache-2.0
-#
+# Wi-Fi Display
 PRODUCT_PACKAGES += \
+    android.media.audio.common.types-V2-cpp \
     libnl \
+    libpng.vendor \
     libwfdaac_vendor
 
 PRODUCT_BOOT_JARS += \
