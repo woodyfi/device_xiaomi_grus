@@ -5,9 +5,9 @@
 #
 
 PRODUCT_MAKEFILES := \
-    $(LOCAL_DIR)/lineage_grus.mk
+    $(LOCAL_DIR)/afterlife_grus.mk
 
 COMMON_LUNCH_CHOICES := \
-    lineage_grus-user \
-    lineage_grus-userdebug \
-    lineage_grus-eng
+    afterlife_grus-user \
+    afterlife_grus-userdebug \
+    afterlife_grus-eng
