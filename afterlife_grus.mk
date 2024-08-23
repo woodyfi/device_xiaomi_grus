@@ -9,12 +9,17 @@ $(call inherit-product, $(SRC_TARGET_DIR)/product/core_64_bit.mk)
 $(call inherit-product, $(SRC_TARGET_DIR)/product/full_base_telephony.mk)
 
 # Inherit some common Lineage stuff.
-$(call inherit-product, vendor/lineage/config/common_full_phone.mk)
+$(call inherit-product, vendor/afterlife/config/common_full_phone.mk)
 
 # Inherit from grus device
 $(call inherit-product, device/xiaomi/grus/device.mk)
 
-PRODUCT_NAME := lineage_grus
+AFTERLIFE_BUILD_TYPE := OFFICIAL
+AFTERLIFE_MAINTAINER := Sweetbtrfly
+TARGET_BOOT_ANIMATION_RES := 1080
+USE_PIXEL_CHARGING := true
+
+PRODUCT_NAME := afterlife_grus
 PRODUCT_DEVICE := grus
 PRODUCT_MANUFACTURER := Xiaomi
 PRODUCT_BRAND := Xiaomi
@@ -32,13 +37,13 @@ TARGET_FACE_UNLOCK_SUPPORTED := true
 # 1 - vanilla (default)
 # 2 - microg
 # 3 - gapps
-TARGET_BUILD_PACKAGE := 2
+TARGET_BUILD_PACKAGE := 1
 
 # TARGET_LAUNCHER options:
 # 1 - stock (default)
 # 2 - lawnchair
 # 3 - pixel (valid only on gapps builds)
-TARGET_LAUNCHER := 2
+TARGET_LAUNCHER := 1
 
 # GAPPS (valid only for GAPPS builds)
 TARGET_SUPPORTS_QUICK_TAP := true
@@ -50,8 +55,6 @@ TARGET_INCLUDE_LIVE_WALLPAPERS := false
 # Debugging
 TARGET_INCLUDE_MATLOG := false
 
-# Maintainer
-ALPHA_BUILD_TYPE := Official
 ALPHA_MAINTAINER := elpaablo
 
 PRODUCT_ENFORCE_VINTF_MANIFEST := false
