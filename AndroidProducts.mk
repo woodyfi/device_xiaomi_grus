@@ -5,9 +5,9 @@
 #
 
 PRODUCT_MAKEFILES := \
-    $(LOCAL_DIR)/afterlife_grus.mk
+    $(LOCAL_DIR)/orion_grus.mk
 
 COMMON_LUNCH_CHOICES := \
-    afterlife_grus-user \
-    afterlife_grus-userdebug \
-    afterlife_grus-eng
+    orion_grus-user \
+    orion_grus-userdebug \
+    orion_grus-eng
